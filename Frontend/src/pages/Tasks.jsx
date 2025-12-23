@@ -73,6 +73,7 @@ const tasks = [
     priority: 'High',
     assignee: { name: 'John Doe', initials: 'JD' },
     assigneeInitials: 'JD',
+    reporter: { name: 'Sumit Chauhan', initials: 'SC' },
     dueDate: '2024-01-20',
     timeSpent: '4h 30m',
     description: 'Create a modern and responsive landing page design',
@@ -93,6 +94,7 @@ const tasks = [
     priority: 'Medium',
     assignee: { name: 'Jane Smith', initials: 'JS' },
     assigneeInitials: 'JS',
+    reporter: { name: 'Sumit Chauhan', initials: 'SC' },
     dueDate: '2024-01-22',
     timeSpent: '1h 15m',
     description: 'Update all API endpoints documentation',
@@ -113,6 +115,7 @@ const tasks = [
     priority: 'High',
     assignee: { name: 'Mike Johnson', initials: 'MJ' },
     assigneeInitials: 'MJ',
+    reporter: { name: 'Sumit Chauhan', initials: 'SC' },
     dueDate: '2024-01-18',
     timeSpent: '3h 45m',
     description: 'Review and test all pending pull requests',
@@ -133,6 +136,7 @@ const tasks = [
     priority: 'Low',
     assignee: { name: 'Sarah Williams', initials: 'SW' },
     assigneeInitials: 'SW',
+    reporter: { name: 'Sumit Chauhan', initials: 'SC' },
     dueDate: '2024-01-15',
     timeSpent: '2h 20m',
     description: 'Prepare slides for client presentation',
@@ -153,6 +157,7 @@ const tasks = [
     priority: 'High',
     assignee: { name: 'John Doe', initials: 'JD' },
     assigneeInitials: 'JD',
+    reporter: { name: 'Sumit Chauhan', initials: 'SC' },
     dueDate: '2024-01-19',
     timeSpent: '5h 10m',
     description: 'Fix the authentication token refresh issue',
@@ -173,6 +178,7 @@ const tasks = [
     priority: 'Medium',
     assignee: { name: 'Jane Smith', initials: 'JS' },
     assigneeInitials: 'JS',
+    reporter: { name: 'Sumit Chauhan', initials: 'SC' },
     dueDate: '2024-01-25',
     timeSpent: '0h 0m',
     description: 'Write comprehensive unit tests for new features',
@@ -1274,7 +1280,8 @@ export default function Tasks() {
 
       {/* Table View */}
       {viewMode === 'list' && (
-        <Card className="rounded-[4px] w-full max-w-full overflow-hidden">
+        <div className="w-full max-w-full">
+        <Card className="rounded-t-[4px] rounded-b-none w-full max-w-full overflow-hidden border-b-0">
           <CardContent className="p-0 w-full overflow-x-auto max-w-full">
             <Table>
               <TableHeader>
@@ -1290,13 +1297,12 @@ export default function Tasks() {
                   <TableHead className="w-[150px] h-10 px-3 text-xs font-normal whitespace-nowrap">Created At</TableHead>
                   <TableHead className="w-[150px] h-10 px-3 text-xs font-normal whitespace-nowrap">Updated At</TableHead>
                   <TableHead className="w-[150px] h-10 px-3 text-xs font-normal whitespace-nowrap">Reported At</TableHead>
-                  <TableHead className="w-[50px] h-10 px-3 text-xs font-normal whitespace-nowrap"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredTasks.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={12} className="text-center py-8 text-muted-foreground">
+                    <TableCell colSpan={11} className="text-center py-8 text-muted-foreground">
                       No tasks found matching your filters.
                     </TableCell>
                   </TableRow>
@@ -1352,87 +1358,26 @@ export default function Tasks() {
                       </TableCell>
                       <TableCell className="px-3 py-2 text-xs whitespace-nowrap">{formatDateTime(task.createdAt)}</TableCell>
                       <TableCell className="px-3 py-2 text-xs whitespace-nowrap">{formatDateTime(task.updatedAt)}</TableCell>
-                      <TableCell className="px-3 py-2 text-xs whitespace-nowrap">{formatDateTime(task.reportedAt)}</TableCell>
-                      <TableCell className="px-3 py-2 whitespace-nowrap">
-                        <div className="relative">
-                          <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            className="h-7 w-7"
-                            onClick={() => setOpenMenuId(openMenuId === task.id ? null : task.id)}
-                          >
-                            <MoreVertical className="h-4 w-4" />
-                            <span className="sr-only">Open menu</span>
-                          </Button>
-                          {openMenuId === task.id && (
-                            <>
-                              <div 
-                                className="fixed inset-0 z-40"
-                                onClick={() => setOpenMenuId(null)}
-                              />
-                              <div className="absolute right-0 z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md">
-                                <div 
-                                  className="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent focus:bg-accent"
-                                  onClick={() => {
-                                    setOpenMenuId(null)
-                                    const task = tasks.find(t => t.id === openMenuId)
-                                    if (task) {
-                                      setSelectedTask(task)
-                                      setShowTaskDetail(true)
-                                    }
-                                  }}
-                                >
-                                  <Edit className="mr-2 h-4 w-4" />
-                                  Edit
-                                </div>
-                                <div 
-                                  className="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent focus:bg-accent text-destructive"
-                                  onClick={() => {
-                                    setOpenMenuId(null)
-                                    // Handle delete
-                                  }}
-                                >
-                                  <Trash2 className="mr-2 h-4 w-4" />
-                                  Delete
-                                </div>
-                                <div 
-                                  className="relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent focus:bg-accent"
-                                  onClick={() => {
-                                    setOpenMenuId(null)
-                                    const task = tasks.find(t => t.id === openMenuId)
-                                    if (task) {
-                                      setSelectedTask(task)
-                                      setShowTaskDetail(true)
-                                    }
-                                  }}
-                                >
-                                  <Eye className="mr-2 h-4 w-4" />
-                                  View Details
-                                </div>
-                              </div>
-                            </>
-                          )}
-                        </div>
+                      <TableCell className="px-3 py-2 text-xs whitespace-nowrap">
+                        {task.reporter?.name || 'N/A'}
                       </TableCell>
                     </TableRow>
                   ))
                 )}
-                {/* Create Task Row */}
-                <TableRow className="hover:bg-muted/50 border-t-2">
-                  <TableCell colSpan={12} className="px-3 py-2">
-                    <button
-                      className="w-full flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors py-1"
-                      onClick={() => setShowAddTask(true)}
-                    >
-                      <Plus className="h-4 w-4" />
-                      <span>Create Task</span>
-                    </button>
-                  </TableCell>
-                </TableRow>
               </TableBody>
             </Table>
           </CardContent>
         </Card>
+        {/* Create Task Button - Outside Table */}
+        <Button
+          variant="outline"
+          className="w-full rounded-t-none rounded-b-[4px] flex items-center justify-start gap-2 border-t-0 px-3"
+          onClick={() => setShowAddTask(true)}
+        >
+          <Plus className="h-4 w-4" />
+          <span>Create Task</span>
+        </Button>
+        </div>
       )}
 
       {/* Kanban View */}

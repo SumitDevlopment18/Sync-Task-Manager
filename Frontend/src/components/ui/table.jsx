@@ -2,11 +2,11 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 const Table = React.forwardRef(({ className, ...props }, ref) => (
-  <div className="relative rounded-[4px]">
+  <div className="relative rounded-[4px] w-full">
     <table
       ref={ref}
       className={cn("caption-bottom text-sm", className)}
-      style={{ width: 'max-content' }}
+      style={{ minWidth: '100%', width: 'max-content' }}
       {...props}
     />
   </div>
