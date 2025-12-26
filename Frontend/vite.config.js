@@ -11,4 +11,13 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    host: true, // Allow external connections
+    allowedHosts: [
+      'casebound-burghal-louanne.ngrok-free.dev',
+      '.ngrok-free.dev', // Allow all ngrok subdomains
+      '.ngrok.io', // Allow legacy ngrok domains too
+      'localhost'
+    ],
+  },
 })
